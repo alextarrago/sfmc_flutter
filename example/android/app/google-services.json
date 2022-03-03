@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "870607518782",
+    "project_id": "sfmc-d93ae",
+    "storage_bucket": "sfmc-d93ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870607518782:android:bff45b4a766937d4c4e56f",
+        "android_client_info": {
+          "package_name": "com.dribba.sfmc_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870607518782-rjsoq850n1jafvv3sb8e4vsdvavq5n2o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiLUV6HGnMZpFL2FREpcWQPN4nYXRiTuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870607518782-rjsoq850n1jafvv3sb8e4vsdvavq5n2o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870607518782:android:7395b6ebceca3637c4e56f",
+        "android_client_info": {
+          "package_name": "com.dribba.sfmc_flutter_example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870607518782-rjsoq850n1jafvv3sb8e4vsdvavq5n2o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiLUV6HGnMZpFL2FREpcWQPN4nYXRiTuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870607518782-rjsoq850n1jafvv3sb8e4vsdvavq5n2o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
