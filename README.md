@@ -28,6 +28,14 @@ dependencies:
 
 Add your `google-services.json` from your Firebase to `app/`.
 
+By default the icon used in notification is the app icon, but you can define other in `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<meta-data
+    android:name="SFCMNotificationIcon"
+    android:resource="@drawable/custom_icon_here" />
+```
+
 ### Setup iOS
 
 No additional setup is needed for iOS.

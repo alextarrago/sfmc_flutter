@@ -3,6 +3,7 @@ package com.dribba.sfmc_flutter
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.pm.PackageManager
 import androidx.annotation.NonNull
 import com.salesforce.marketingcloud.MCLogListener
 import com.salesforce.marketingcloud.MarketingCloudConfig
@@ -17,6 +18,8 @@ import com.salesforce.marketingcloud.sfmcsdk.SFMCSdk
 import com.salesforce.marketingcloud.sfmcsdk.SFMCSdkModuleConfig
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+
+private const val SFMC_NOTIFICATION_ICON_KEY = "SFCMNotificationIcon"
 
 /** SfmcFlutterPlugin */
 class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -105,7 +108,7 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     fun setupSFMC(appId: String, accessToken: String, mid: String, sfmcURL: String, senderId: String): Boolean {
-        val notificationIcon = context.applicationInfo.icon
+        val notificationIcon = getNotificationIcon()
 
         SFMCSdk.configure(context.applicationContext, SFMCSdkModuleConfig.build {
             pushModuleConfig = MarketingCloudConfig.builder().apply {
@@ -246,5 +249,19 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromActivityForConfigChanges() {
         // TODO: Not yet implemented
+    }
+
+    private fun getNotificationIcon(): Int {
+        val appInfo = context
+            .applicationContext
+            .packageManager
+            .getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
+
+        val metaData = appInfo.metaData
+        if (metaData.containsKey(SFMC_NOTIFICATION_ICON_KEY)) {
+            return metaData.getInt(SFMC_NOTIFICATION_ICON_KEY)
+        }
+
+        return appInfo.icon
     }
 }
