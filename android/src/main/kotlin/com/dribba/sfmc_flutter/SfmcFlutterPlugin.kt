@@ -28,11 +28,22 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "sfmc_flutter")
         channel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
-
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-        if (call.method == "setContactKey") {
+        if (call.method == "setupSFMC") {
+            val appId = call.argument<String>("appId")
+            val accessToken = call.argument<String>("accessToken")
+            val mid = call.argument<String>("mid")
+            val sfmcURL = call.argument<String>("sfmcURL")
+            val senderId = call.argument<String>("senderId")
+
+            if (appId == null || accessToken == null || mid == null || sfmcURL == null || senderId == null) {
+                result.error("ARGS_NOT_ALLOWED", "ARGS_NOT_ALLOWED", "ARGS_NOT_ALLOWED");
+                return
+            }
+            result.success(setupSFMC(appId, accessToken, mid, sfmcURL, senderId))
+        } else if (call.method == "setContactKey") {
             val cKey = call.argument<String>("cId")
             if (cKey == null) {
                 result.error("ARGS_NOT_ALLOWED", "ARGS_NOT_ALLOWED", "ARGS_NOT_ALLOWED");
@@ -93,56 +104,25 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         channel.setMethodCallHandler(null)
     }
 
-    fun setupSFMC(appId: String, accessToken: String, mid: String, sfmcURL: String, locationEnabled: Boolean, inboxEnabled: Boolean, analyticsEnabled: Boolean, delayRegistration: Boolean) {
-        // Initialize logging _before_ initializing the SDK to avoid losing valuable debugging information.
-        if (BuildConfig.DEBUG) {
-            MarketingCloudSdk.setLogLevel(MCLogListener.VERBOSE)
-            MarketingCloudSdk.setLogListener(MCLogListener.AndroidLogListener())
-        }
+    fun setupSFMC(appId: String, accessToken: String, mid: String, sfmcURL: String, senderId: String): Boolean {
+        val notificationIcon = context.applicationInfo.icon
 
-        SFMCSdk.configure(context, SFMCSdkModuleConfig.build {
+        SFMCSdk.configure(context.applicationContext, SFMCSdkModuleConfig.build {
             pushModuleConfig = MarketingCloudConfig.builder().apply {
-                setApplicationId("{mc_application_id}")
-                setAccessToken("{mc_access_token}")
-                setSenderId("{fcm_sender_id}")
-                setMarketingCloudServerUrl("{marketing_cloud_url}")
-                setMid("{mid}")
+                setApplicationId(appId)
+                setAccessToken(accessToken)
+                setSenderId(senderId)
+                setMarketingCloudServerUrl(sfmcURL)
+                setMid(mid)
+                setNotificationCustomizationOptions(
+                    NotificationCustomizationOptions.create(notificationIcon)
+                )
                 // Other configuration options
-            }.build(context)
+            }.build(context.applicationContext)
         }) { initStatus ->
             // TODO handle initialization status
         }
-
-        SFMCSdk.configure(context, SFMCSdkModuleConfig.build {
-            pushModuleConfig = MarketingCloudConfig.builder().apply {
-                setApplicationId("")
-                setAccessToken("")
-                setSenderId("")
-                setMarketingCloudServerUrl("")
-                setMid("")
-            }.build(context)
-        }) { initStatus ->
-
-        }
-
-//        let builder = MarketingCloudSDKConfigBuilder ()
-//                .sfmc_setApplicationId(appId)
-//                .sfmc_setAccessToken(accessToken)
-//                .sfmc_setMarketingCloudServerUrl(mid)
-//                .sfmc_setMid(mid)
-//                .sfmc_setDelayRegistration(untilContactKeyIsSet:(delayRegistration ?? false) as NSNumber)
-//        .sfmc_setInboxEnabled((inboxEnabled ?? true) as NSNumber)
-//        .sfmc_setLocationEnabled((locationEnabled ?? true) as NSNumber)
-//        .sfmc_setAnalyticsEnabled((analyticsEnabled ?? true) as NSNumber)
-//        .sfmc_build()!
-//
-//        do {
-//            try MarketingCloudSDK.sharedInstance().sfmc_configure(with:builder)
-//                onDone(true, nil, nil);
-//            } catch let error as NSError {
-//                onDone(false, error.localizedDescription, error.code);
-//            }
-//        }
+        return true
     }
 
     /*
@@ -214,13 +194,13 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /*
      * Verbose Management
      */
-    fun setupVerbose(status: Boolean): Boolean {
-        if (status) {
+    fun setupVerbose(isEnabled: Boolean): Boolean {
+        if (isEnabled) {
             MarketingCloudSdk.setLogLevel(MCLogListener.VERBOSE)
             MarketingCloudSdk.setLogListener(MCLogListener.AndroidLogListener())
         } else {
-            MarketingCloudSdk.setLogLevel(MCLogListener.VERBOSE)
-            MarketingCloudSdk.setLogListener(MCLogListener.AndroidLogListener())
+            MarketingCloudSdk.setLogLevel(MCLogListener.ERROR)
+            MarketingCloudSdk.setLogListener(null)
         }
         return true
     }
@@ -253,11 +233,11 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onDetachedFromActivity() {
-        TODO("Not yet implemented")
+        // TODO: Not yet implemented
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        TODO("Not yet implemented")
+        // TODO: Not yet implemented
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -265,6 +245,6 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
-        TODO("Not yet implemented")
+        // TODO: Not yet implemented
     }
 }

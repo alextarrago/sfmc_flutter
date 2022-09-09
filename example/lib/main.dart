@@ -32,6 +32,7 @@ class _MyAppState extends State<MyApp> {
         mid: "",
         sfmcURL:
             "",
+        senderId: "",
         delayRegistration: true);
     await SFMCSDK.setContactKey("");
     await SFMCSDK.enablePush();
