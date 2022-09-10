@@ -104,6 +104,9 @@ class SFMCSDK {
     return result;
   }
 
+  static Future<String?> getPushToken() =>
+    _channel.invokeMethod('getPushToken');
+
   /*
   * SDK State Management
   */

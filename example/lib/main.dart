@@ -51,6 +51,9 @@ class _MyAppState extends State<MyApp> {
 
     await SFMCSDK.sdkState();
 
+    final pushToken = await SFMCSDK.getPushToken();
+    print("Token: ${pushToken}");
+
     await SFMCSDK.enableVerbose();
     Timer.periodic(Duration(seconds: 2), (timer) async {
       _platformVersion = (await SFMCSDK.sdkState())!;

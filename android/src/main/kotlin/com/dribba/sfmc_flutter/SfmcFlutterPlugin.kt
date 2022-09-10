@@ -90,6 +90,8 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             result.success(setPushEnabled(true))
         } else if (call.method == "disablePush") {
             result.success(setPushEnabled(false))
+        } else if (call.method == "getPushToken") {
+            getPushToken(result::success)
         } else if (call.method == "sdkState") {
             getSDKState() { res ->
                 result.success(res)
@@ -209,7 +211,7 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     /*
-     * Verbose Management
+     * Token Management
      */
     fun pushEnabled(result: (Any?) -> Unit) {
         MarketingCloudSdk.requestSdk { sdk ->
@@ -226,6 +228,14 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         return true
     }
 
+    fun getPushToken(onResult: (String?) -> Unit) {
+        SFMCSdk.requestSdk { sdk ->
+            sdk.mp {
+                onResult(it.pushMessageManager.pushToken)
+            }
+        }
+    }
+
     /*
      * SDKState Management
      */
@@ -235,21 +245,13 @@ class SfmcFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
     }
 
-    override fun onDetachedFromActivity() {
-        // TODO: Not yet implemented
-    }
+    override fun onDetachedFromActivity() = Unit
 
-    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        // TODO: Not yet implemented
-    }
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) = Unit
 
-    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        activity = binding.activity;
-    }
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) = Unit
 
-    override fun onDetachedFromActivityForConfigChanges() {
-        // TODO: Not yet implemented
-    }
+    override fun onDetachedFromActivityForConfigChanges() = Unit
 
     private fun getNotificationIcon(): Int {
         val appInfo = context

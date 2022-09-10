@@ -102,6 +102,8 @@ public class SwiftSfmcFlutterPlugin: NSObject, FlutterPlugin, MarketingCloudSDKU
             result(setPushEnabled(status: true));
         } else if call.method == "disablePush" {
             result(setPushEnabled(status: false));
+        } else if call.method == "getPushToken" {
+            result(getPushToken());
         } else if call.method == "sdkState" {
             result(getSDKState())
         } else if call.method == "enableVerbose" {
@@ -219,9 +221,14 @@ public class SwiftSfmcFlutterPlugin: NSObject, FlutterPlugin, MarketingCloudSDKU
     public func pushEnabled() -> Bool {
         return MarketingCloudSDK.sharedInstance().sfmc_pushEnabled()
     }
+
     public func setPushEnabled(status: Bool) -> Bool {
         MarketingCloudSDK.sharedInstance().sfmc_setPushEnabled(status)
         return true
+    }
+
+    public func getPushToken() -> String? {
+        return MarketingCloudSDK.sharedInstance().sfmc_deviceToken()
     }
     
     /*
