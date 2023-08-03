@@ -32,6 +32,7 @@ class _MyAppState extends State<MyApp> {
         mid: "",
         sfmcURL:
             "",
+        senderId: "",
         delayRegistration: true);
     await SFMCSDK.setContactKey("");
     await SFMCSDK.enablePush();
@@ -49,6 +50,9 @@ class _MyAppState extends State<MyApp> {
     await SFMCSDK.enableVerbose();
 
     await SFMCSDK.sdkState();
+
+    final pushToken = await SFMCSDK.getPushToken();
+    print("Token: ${pushToken}");
 
     await SFMCSDK.enableVerbose();
     Timer.periodic(Duration(seconds: 2), (timer) async {

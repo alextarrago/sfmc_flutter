@@ -1,6 +1,6 @@
 name: sfmc_flutter
 description: Salesforce Marketing Cloud implementation for Flutter for both iOS and Android. Integrate SF Marketing Cloud (SFMC 7.x.x)
-version: 1.0.2
+version: 1.1.0
 homepage: https://www.dribba.com
 
 environment:

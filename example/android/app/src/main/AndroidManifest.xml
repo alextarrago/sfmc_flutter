@@ -23,5 +23,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="SFCMNotificationIcon"
+            android:resource="@drawable/ic_notification_icon" />
     </application>
 </manifest>

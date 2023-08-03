@@ -12,10 +12,9 @@ Flutter plugin for integrating Salesforce Marketing Cloud in Flutter apps, for b
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'MarketingCloudSDK'
-  s.platform = :ios, '13.0'
+  s.dependency 'MarketingCloudSDK', '8.0.13'
+  s.platform = :ios, '10.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
-  s.swift_version = '5.0'
 end
